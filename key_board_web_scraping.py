@@ -1,5 +1,5 @@
-import requests
 import bs4
+import requests
 
 urls = {
     'red_k8': 'https://catalog.onliner.by/keyboards/keychron/k8pj1ru',
@@ -20,10 +20,12 @@ def get_price(address, tag, class_name) -> tuple:
     return something_name, something_price
 
 
-result = {}
-for url in urls.values():
-    name, price = get_price(url, 'a', html_class_name)
-    result[name] = price
+def get_keyboards_info() -> str:
+    result = ''
+    for url in urls.values():
+        name, price = get_price(url, 'a', html_class_name)
+        result += f'{name}: {price}\n'
+    return result
 
-for name, price in result.items():
-    print(f'{name} - цена: {price}')
+
+print(get_keyboards_info())

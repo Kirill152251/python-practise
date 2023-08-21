@@ -1,4 +1,5 @@
 from functools import wraps
+# Functions in Python - objects!.
 
 
 def test_decorator(func):
@@ -22,5 +23,36 @@ def some_func(first, second):
     return first + second
 
 
-print(some_func(1, 2))
-print(some_func.__name__)
+def start_with_k(func):
+    def wrapper(*args):
+        func(*args)
+        if args[0].startswith('K'):
+            print('Text starts with "K".')
+    return wrapper
+
+
+@start_with_k
+def print_text(text):
+    print(text)
+
+
+def typped(type_):
+    def real_decorator(func):
+        def wrapper(*args):
+            for arg in args:
+                if not isinstance(arg, type_):
+                    raise ValueError(f"Should be {type_}")
+            return func(*args)
+        return wrapper
+    return real_decorator
+
+
+@typped(int)
+def calculate(a, b, c):
+    return a + b + c
+
+
+if __name__ == '__main__':
+    # print(calculate(5, 4, 2))
+    b = 8
+    print(f"{b=}")

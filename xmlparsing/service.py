@@ -1,23 +1,35 @@
-import xml.etree.ElementTree as et
+import xml.etree.ElementTree as ET
+from dataclasses import dataclass
 
 
-def get_optins(start_point: str = 'DXB', end_point: str = 'BKK'):
-    pass
+@dataclass
+class Flight:
+    source: str
+    destination: str
+    carrier: str
+    number_of_stops: str
+    departure_time_stamp: str
+    arrival_time_stamp: str
+    flight_class: str
+    ticket_type: str
 
 
-tree = et.parse('RS_Via-3.xml')
+tree = ET.parse(r'D:\python-practise\xmlparsing\RS_Via-3.xml')
 root = tree.getroot()
-all_flights = root[1]
-item = all_flights[0]
-for c in item:
-    print(c.tag, c.attrib)
-print()
-item_onwards_flights = item[0]
-item_return_flights = item[1]
+flight_list: list[Flight] = []
 
-test = root.find('Source')
-print(test.text)
-for c in item_onwards_flights:
-    for c1 in c:
-        for c2 in c1:
-            print(c2.tag, c2.text)
+for flight in root.iter('Flight'):
+    flight_data = {
+        'Source': None,
+        'Destination': None,
+        'Carrier': None,
+        'NumberOfStops': None,
+        'DepartureTimeStamp': None,
+        'ArrivalTimeStamp': None,
+        'Class': None,
+        'TicketType': None
+    }
+    for attrib in flight:
+        if attrib.tag in flight_data:
+            flight_data[attrib.tag] = attrib.text
+    flight_list.append(Flight(*flight_data.values()))

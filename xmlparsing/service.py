@@ -12,13 +12,17 @@ class Flight:
     arrival_time_stamp: str
     flight_class: str
     ticket_type: str
+    warning_text: str
+    price_value: float
+    currency: str
 
 
-tree = ET.parse(r'D:\python-practise\xmlparsing\RS_Via-3.xml')
+tree = ET.parse(r'/home/kirill/pythonProject/xmlparsing/RS_Via-3.xml')
 root = tree.getroot()
-flight_list: list[Flight] = []
+priced_itineraries = root.find('PricedItineraries')
+parsed_flights: list[Flight] = []
 
-for flight in root.iter('Flight'):
+for flights_attr in priced_itineraries.findall('Flights'):
     flight_data = {
         'Source': None,
         'Destination': None,
@@ -27,9 +31,22 @@ for flight in root.iter('Flight'):
         'DepartureTimeStamp': None,
         'ArrivalTimeStamp': None,
         'Class': None,
-        'TicketType': None
+        'TicketType': None,
+        'WarningText': '',
+        'price': None,
+        'currency': None
     }
-    for attrib in flight:
-        if attrib.tag in flight_data:
-            flight_data[attrib.tag] = attrib.text
-    flight_list.append(Flight(*flight_data.values()))
+    price_data_block = flights_attr.find('Pricing')
+    flight_data['currency'] = price_data_block.get('currency')
+    for item in price_data_block.findall('ServiceCharges'):
+        if item.get('ChargeType') == 'TotalAmount':
+            flight_data['price'] = float(item.text)
+
+    for flight in flights_attr.iter('Flight'):
+        for attr in flight:
+            if attr.tag in flight_data:
+                flight_data[attr.tag] = attr.text
+        parsed_flights.append(Flight(*flight_data.values()))
+
+for i in range(6):
+    print(parsed_flights[i])

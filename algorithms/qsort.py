@@ -1,4 +1,5 @@
 def qsort(arr: list):
+    """nlog(n)"""
     if len(arr) < 2:
         return arr
     base = arr.pop(0)

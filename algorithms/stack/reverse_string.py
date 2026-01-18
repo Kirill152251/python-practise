@@ -22,40 +22,31 @@ class Stack:
         self.stack_list.append(value)
 
     def pop(self):
-        if not self.stack_list:
+        if self.is_empty():
             return None
-        return self.stack_list.pop()
-            
+        else:
+            return self.stack_list.pop()
 
-my_stack = Stack()
-my_stack.push(1)
-my_stack.push(2)
-my_stack.push(3)
+def reverse_string(s: str) -> str:
+    """Reverse string"""
+    st = Stack()
+    for ch in s:
+        st.push(ch)
+    res = ""
+    while not st.is_empty():
+        res += st.pop()
+    return res
 
-print("Stack before pop():")
-my_stack.print_stack()
 
-print("\nPopped node:")
-print(my_stack.pop())
+my_string = 'hello'
 
-print("\nStack after pop():")
-my_stack.print_stack()
+print(reverse_string(my_string) )
 
 
 
 """
     EXPECTED OUTPUT:
     ----------------
-    Stack before pop():
-    3
-    2
-    1
-    
-    Popped node:
-    3
-    
-    Stack after pop():
-    2
-    1
- 
+    olleh
+
 """

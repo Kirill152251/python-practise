@@ -24,9 +24,9 @@ class LinkedList:
     def has_loop(self) -> bool:
         slow = self.head
         fast = self.head
-        while fast and fast.next:
+        while fast and fast.next: # !!!
             slow = slow.next
-            fast = fast.next.next
+            fast = fast.next.next # fast pointer move 2x faster !!!
             if fast == slow:
                 return True
         return False

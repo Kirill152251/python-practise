@@ -43,21 +43,77 @@ class BinarySearchTree:
                 return True
         return False
 
+    def rcontains(self, value):
+        def check(node, value):
+            if node == None:
+                return False
+            if value > node.value:
+                return check(node.right, value)
+            elif value < node.value:
+                return check(node.left, value)
+            else:
+                return True
+
+        return check(self.root, value) 
+
+    def rinsert(self, value):
+        if not self.root:
+            self.root = Node
+        self.__rinsert(self.root, value)
+
+    def __rinsert(self, current_node: Node, value: int):
+        if current_node == None: # current node
+            return Node(value=value)
+        if current_node.value > value:
+            current_node.right = self.__rinsert(current_node.right, value)
+        if current_node.value < value:
+            current_node.left = self.__rinsert(current_node.left, value)
+        return current_node # !!!
+
+    def min_value(self, root):
+        current_node = root
+        while current_node.left is not None:
+            current_node = current_node.left
+        return current_node.value
+
+    def delete_node(self, value):
+        self.__delete(self.root, value)
+
+    def __delete(self, current_node, value):
+        if current_node == None:
+            return None
+        elif current_node.value > value:
+            current_node.left = self.__delete(current_node.left, value) # !!!
+        elif current_node.value < value:
+            current_node.right = self.__delete(current_node.right, value) # !!!
+        else:
+            if current_node.left == None and current_node.right == None:
+                return None # !!!
+            elif current_node.left == None: # !!!
+                current_node = current_node.right
+            elif current_node.right == None: # !!!
+                current_node = current_node.left
+            else:
+                min_val = self.min_value(current_node.right)
+                current_node.value = min_val
+                current_node.right = self.__delete(current_node.right, min_val) #!!!
+        return current_node
+
 
 my_tree = BinarySearchTree()
-my_tree.insert(47)
-my_tree.insert(21)
-my_tree.insert(76)
-my_tree.insert(18)
-my_tree.insert(27)
-my_tree.insert(52)
-my_tree.insert(82)
+my_tree.rinsert(47)
+my_tree.rinsert(21)
+my_tree.rinsert(76)
+my_tree.rinsert(18)
+my_tree.rinsert(27)
+my_tree.rinsert(52)
+my_tree.rinsert(82)
 
 print('BST Contains 27:')
-print(my_tree.contains(27))
+print(my_tree.rcontains(27))
 
 print('\nBST Contains 17:')
-print(my_tree.contains(17))
+print(my_tree.rcontains(17))
                 
 
 

@@ -54,10 +54,6 @@ class BinarySearchTree:
         return mid_node
 
 
-#  +====================================================+  
-#  |  Test code below will print output to "User logs"  |
-#  +====================================================+ 
-
 def check_balanced_and_correct_traversal(bst, expected_traversal):
     is_balanced = bst.is_balanced()
     inorder = bst.inorder_traversal()
@@ -99,3 +95,5 @@ bst = BinarySearchTree()
 large_sorted_list = list(range(1, 16))  # A list from 1 to 15
 bst.sorted_list_to_bst(large_sorted_list)
 check_balanced_and_correct_traversal(bst, large_sorted_list)
+
+
